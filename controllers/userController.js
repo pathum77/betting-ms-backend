@@ -90,6 +90,17 @@ exports.addAgent = async (req, res) => {
     }
 };
 
+exports.getUserData = async (req, res) => {
+    try {
+        const userId = req.user.userId;
+
+        const [userData] = await userModel.user.find({ _id: userId }, 'firstName lastName username  role');
+        res.status(200).json(userData);
+    } catch (error) {
+        res.status(500).json({ title: 'Error!', message: 'Something went wrong. Plaese try again.' });
+    }
+};
+
 exports.getUsers = async (req, res) => {
     try {
         const role = req.user.role;
