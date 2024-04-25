@@ -95,7 +95,8 @@ exports.getUserData = async (req, res) => {
         const userId = req.user.userId;
 
         const [userData] = await userModel.user.find({ _id: userId }, 'firstName lastName username  role');
-        res.status(200).json(userData);
+
+        res.status(200).json({ ID: userData._id, First_Name: userData.firstName, Last_Name: userData.lastName, Username: userData.username, Role: userData.role });
     } catch (error) {
         res.status(500).json({ title: 'Error!', message: 'Something went wrong. Plaese try again.' });
     }
