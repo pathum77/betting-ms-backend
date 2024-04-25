@@ -8,7 +8,7 @@ exports.getResults = async (req, res) => {
         const byDate = req.params.byDate;
 
         const draws = await drawModel.draw.find({ date: byDate }, '_id date typeId placeId numbers');
-        const bets = await betModel.bet.find({ date: byDate }, '_id userId numbers drawTypeId amount');
+        const bets = await betModel.bet.find({ drawDate: byDate }, '_id userId date numbers drawTypeId amount');
 
         const results = [];
 
@@ -22,6 +22,7 @@ exports.getResults = async (req, res) => {
                     results.push({
                         Bet_ID: bets[j]._id,
                         Draw_ID: draws[i]._id,
+                        Betted_Date: bets[j].date,
                         Draw_Date: draws[i].date,
                         Draw_Type: drawType.name,
                         Place: place.name,
