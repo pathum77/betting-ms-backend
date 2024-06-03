@@ -19,12 +19,8 @@ exports.bet = mongoose.model('Bet', new Schema({
         type: String,
     },
 
-    amount: {
-        type: Number,
-    },
-
-    numbers: {
-        type: String,
+    betData: {
+        type: Object,
     }
 
 }, { timestamps: true }));

@@ -6,12 +6,12 @@ exports.addBet = async (req, res) => {
     try {
         const userId = req.user.userId;
         const drawTypeId = req.body.drawTypeId;
-        const betNumbers = req.body.betNumbers;
-        const amount = req.body.amount;
         const drawDate = req.body.drawDate;
+        const betData = req.body.betData;
         const date = new Date().toISOString().split('T')[0];
 
-        if (!drawTypeId || !betNumbers || !amount || !drawDate) {
+
+        if (!drawTypeId || betData.length === 0) {
             res.status(400).json({ title: 'Error!', message: 'All fiends are required!' });
         } else {
             const userBet = await betsModel.bet.find({ userId: userId, date: date, drawTypeId: drawTypeId });
@@ -24,8 +24,7 @@ exports.addBet = async (req, res) => {
                     drawDate: drawDate,
                     userId: userId,
                     drawTypeId: drawTypeId,
-                    amount: amount,
-                    numbers: betNumbers,
+                    betData: betData,
                 });
 
                 bet.save().then(() => {
@@ -75,8 +74,7 @@ exports.getBets = async (req, res) => {
                     _id: 1,
                     date: 1,
                     drawDate: 1,
-                    numbers: 1,
-                    amount: 1,
+                    betData: 1,
                     "user.id": 1,
                     "user.firstName": 1,
                     "user.lastName": 1,
@@ -89,14 +87,13 @@ exports.getBets = async (req, res) => {
 
         bets.forEach(bet => {
             betsObj.push({
-                Bet_ID: bet._id,
-                User_Id: bet.user.id,
-                User_Name: `${bet.user.firstName} ${bet.user.lastName}`,
-                Draw_Name: bet.draw.name,
-                Betted_Date: bet.date,
-                Draw_date: bet.drawDate,
-                Numbers: bet.numbers,
-                Amount: bet.amount
+                betId: bet._id,
+                userId: bet.user.id,
+                userName: `${bet.user.firstName} ${bet.user.lastName}`,
+                drawName: bet.draw.name,
+                bettedDate: bet.date,
+                drawedDate: bet.drawDate,
+                bets: bet.betData
             });
         });
 
